@@ -8,7 +8,7 @@ struct pedido
     char premium;
 };
 
-bool operator>(pedido a, pedido b)
+bool operator<(pedido a, pedido b)
 {
     if (a.dia != b.dia)
     {
@@ -25,7 +25,7 @@ bool solve()
     int cosas;
     cin >> cosas;
     int dia = 1, entregados = 0;
-    priority_queue<pedido, vector<pedido>, greater<pedido>> pq;
+    priority_queue<pedido> pq;
     while (cosas--)
     {
         int a, c;
@@ -40,6 +40,7 @@ bool solve()
     while (dia <= 30)
     {
         int paq = 0;
+        cout << pq.top().dia << dia << "\n";
         if (pq.top().dia == dia) {
             cout << "#" << dia << "\n";
         }
@@ -50,6 +51,13 @@ bool solve()
             paq++;
         }
         dia++;
+        if (paq == 10) {
+            while (!pq.empty() && pq.top().dia == dia){
+                pedido a = pq.top(); pq.pop();
+                a.dia++;
+                pq.push(a);
+            }
+        }
         if (pq.empty()) {
             break;
         }
