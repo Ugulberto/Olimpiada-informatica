@@ -1,11 +1,13 @@
 #include <bits/stdc++.h>
 using namespace std;
+
 struct pedido
 {
     int prioridad;
     string id;
     int dia;
     char premium;
+    int pos;
 };
 
 bool operator<(pedido a, pedido b)
@@ -14,9 +16,11 @@ bool operator<(pedido a, pedido b)
     {
         return b.dia < a.dia;
     }
-    else
+    else if (a.dia == b.dia && a.prioridad != b.prioridad)
     {
-        return b.prioridad < a.prioridad;
+        return b.prioridad > a.prioridad;
+    } else {
+        return b.pos < a.pos;
     }
 }
 
@@ -24,6 +28,7 @@ bool solve()
 {
     int cosas;
     cin >> cosas;
+    int pa = cosas;
     int dia = 1, entregados = 0;
     priority_queue<pedido> pq;
     while (cosas--)
@@ -34,13 +39,12 @@ bool solve()
         cin >> a >> b >> c >> d;
         if (d == 'P')
             a++;
-        pedido p = {a, b, c, d};
+        pedido p = {a, b, c, d, pa-cosas};
         pq.push(p);
     }
-    while (dia <= 30)
+    while (dia <= 30 && !pq.empty())
     {
         int paq = 0;
-        cout << pq.top().dia << dia << "\n";
         if (pq.top().dia == dia) {
             cout << "#" << dia << "\n";
         }
@@ -50,17 +54,16 @@ bool solve()
             cout << a.id << "\n";
             paq++;
         }
-        dia++;
         if (paq == 10) {
             while (!pq.empty() && pq.top().dia == dia){
+                
                 pedido a = pq.top(); pq.pop();
                 a.dia++;
+                a.prioridad++;
                 pq.push(a);
             }
         }
-        if (pq.empty()) {
-            break;
-        }
+        dia++;
     }
     return false;
 }
