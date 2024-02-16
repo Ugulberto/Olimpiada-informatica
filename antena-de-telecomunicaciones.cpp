@@ -55,6 +55,7 @@ int main() {
             }
         }
     }
-    cout << dist[dist.size()-2]-1 << "\n";
+    int n = dist[dist.size()-2] == -1 ? -1 : dist[dist.size()-2]-1;
+    cout << n << "\n";
     return 0;
 }
